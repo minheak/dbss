@@ -9,6 +9,8 @@ import os
 #os.environ['GROQ_API_KEY'] = "insert key directly"
 #for cloud
 os.environ['GROQ_API_KEY'] = os.getenv("groq")
+os.environ['TELEGRAM_BOT_TOKEN'] = os.getenv("TELEGRAM_BOT_TOKEN")
+
 
 app = Flask(__name__)
 
@@ -76,23 +78,11 @@ def prediction():
 
     return(render_template("prediction.html",r=pred))
 
-@app.route("/start_telegram",methods=["GET","POST"])  
-def start_telegram():
-    
-    domain_url = 'https://dbss-w8nh.onrender.com'
-
-    #following url used to delete existing webhook URL for the telegram bot 
-    delete_webhook_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/deleteWebhook"
-    requests.post(delete_webhook_url, json={"url": domain_url, "drop_pending_updates": True})
-
-    return(render_template("telegram.html"))
-
 
 @app.route("/telegram",methods=["GET","POST"])
-
 def telegram():
 
-    domain_url = 'https://dsat-ft1-ipop.onrender.com'
+    domain_url = 'hhttps://dbss-w8nh.onrender.com'
 
     # The following line is used to delete the existing webhook URL for the Telegram bot
     delete_webhook_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/deleteWebhook"
@@ -123,7 +113,7 @@ def webhook():
         # Pass the query to the Groq model
         client = Groq()
         completion_ds = client.chat.completions.create(
-            model="deepseek-r1-distill-llama-70b",
+            model="llama-3.1-8b-instant",
             messages=[
                 {
                     "role": "user",

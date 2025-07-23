@@ -150,5 +150,18 @@ def webhook():
         })
     return('ok', 200)
 
+@app.route("/user_log",methods=["GET","POST"])
+def user_log():
+    if request.method == "POST":
+        name = request.form['username']
+        t = datetime.datetime.now()
+
+        with sqlite3.connect('user.db') as conn:
+        c = conn.cursor()
+        c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(name,t))
+        conn.commit()
+        return redirect(url_for('main'))
+        
+
 if __name__ == "__main__":
     app.run()

@@ -152,16 +152,22 @@ def webhook():
 
 @app.route("/user_log",methods=["GET","POST"])
 def user_log():
-    if request.method == "POST":
-        name = request.form['username']
-        t = datetime.datetime.now()
+    conn = sqlite3.connect('user.db')
+    c = conn.cursor()
+    c.execute('''select * from user''')
+    r=""
+    for row in c:
+        print(row)
+        r = r + str(row)
+    c.close()
+    conn.close()
+    return render_template("user_log.html", r=r)
 
-        with sqlite3.connect('user.db') as conn:
-        c = conn.cursor()
-        c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(name,t))
-        conn.commit()
-        return redirect(url_for('main'))
-        
+
+@app.route("/sepia_filter", methods=["GET", "POST"])
+def sepia_filter():
+    return(render_template("sepia_filter.html"))
+
 
 if __name__ == "__main__":
     app.run()

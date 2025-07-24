@@ -4,3 +4,5 @@ joblib
 scikit-learn
 groq
 requests
+sqlite3
+gradio
